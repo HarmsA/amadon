@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% load static %}
+    <!--<link rel="stylesheet" type="text/css" href="main.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Store Index</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for sale in merchandise %}
+                <td>{{ sale.item }} </td>
+                <form action="/store/calc/" method="post">
+                    {% csrf_token %}
+                        <td>${{ sale.price }}</td>
+                        <td>
+                            <select name='quantity'>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            </select>
+                            <input type="hidden" name="product_id" value="{{ sale.id }}">
+                            <button type="submit">Buy!</button>
+                        </td>
+                    {% endfor %}
+                </form>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
