@@ -8,14 +8,17 @@ import bcrypt
 # Create your models here.
 class UserManager(models.Manager):
     def validate(self, form):
+        errors = []
         try:
-            user = User.objects.get(email=form['email'])
-            if bcrypt.checkpw(form['password'].encode(), user.password) :
-                return True
-            else:
-                return False
+            user = self.get(email=form['email'])
+            if not bcrypt.checkpw(form['password'].encode(), user.password.encode()):
+                errors.append("Email or password is bad")
         except:
+            errors.append('Email or password is bad')
+        if len(errors)>0:
             return False
+        else:
+            return True
 
     def register_validate(self, form):
         errors = []

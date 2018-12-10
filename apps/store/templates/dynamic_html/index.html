@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% load static %}
+    <!--<link rel="stylesheet" type="text/css" href="main.css"> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'store/main.css' %}">
+
+</head>
+<body>
+<div class="container">
+    <h1>Store Index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Action</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <form action="/store/calc/" method="post">
+                {% csrf_token %}
+            {% for sale in merchandise %}
+            <tr>
+                <td>{{ sale.item }}, {{ sale.id }}</td>
+                <td>${{ sale.price }}</td>
+                <td>
+                    <select name='quantity'>
+                        <option selected="selected" disabled>Objects on page:</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </td>
+                <td><input type="hidden" name="product_id" value="{{ sale.id }}">
+                <input type="submit" name="submit" value="Buy!"></td>
+{#                <td><a href="/course/calc/{{ sale.id }}">Remove</a></td>#}
+
+            </tr>
+                {% endfor %}
+                    </form>
+        </tbody>
+    </table>
+    <h2>Cart</h2>
+    <ul class="list-group">
+        {% for items in item_id_list %}
+            {% for sale in merchandise %}
+        <li class="list-group-item">
+{#               <p>sale.item{{ sale.id }}</p>#}
+{#               <p>items{{ items }}</p>#}
+
+
+{#                {% if sale.id == items %}#}
+                    {{ sale.item }}
+{#                {% endif %}#}
+            {% endfor %}
+
+            {{ merchandise.item }}
+        {% endfor %}
+
+
+        </li>
+            {{ sub_total }}
+
+    </ul>
+</div>
+
+</body>
+</html>

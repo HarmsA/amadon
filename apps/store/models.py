@@ -1,22 +1,22 @@
 from django.db import models
-from ..users.models import User
 
-# Create your models here.
 
 class StoreManager(models.Manager):
-    # def calculate(self, form):
-    #     print(form)
-    pass
+    def calculate(self, form):
+        total = form['quantity']
+        cost = Store.objects.get(id=form['product_id'])
+        price = float(total)*float(cost.price)
+        return price
+
 
 class Store(models.Model):
     item = models.CharField(max_length=255)
-    price = models.IntegerField(default=0)
-    quantity = models.IntegerField(default=0)
+    price = models.DecimalField(default=0, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = StoreManager()
 
 
     def __str__(self):
-        items = f'There are {self.quantity} {self.item} left at ${self.price} each.'
+        items = f'{self.item} for ${self.price} each.'
         return items
